@@ -1,18 +1,21 @@
 
 class restaurant(object):
       def __init__(self,table_array):
-          self.tables = self.init_tables(table_array)
+          self.table_dict = self.init_tables(table_array)
           self.total_capacity = self.calc_total_capacity(table_array)
       
       #table information is stored as an array of tuples
-      #ie: [(6,1),(2,1),(4,1)] represents 1 table with
+      #ie: [(6,1),(2,1),(4,2)] represents 1 table with
       #capacity 6, 1 table with capacity 2 and 1 table
       #with capacity 4
-      #the purpose of this function is to create an array of
-      #table objects for each different type of table 
+      #the purpose of this function is to create a dictionary of
+      #table objects where each key of the dictionary is the capacity of the table
+      #ie: [(6,1),(2,1),(4,1)] turns into the dictionary
+      #{6:[table_object],2:[table_object],4:[table_object,table_object]}
       def init_tables(self,table_array):
-          arr = []
+          table_dict = {}
           for table_tuple in table_array:
+              arr = []
               capacity = table_tuple[0]
               num_tables = table_tuple[1]
               #create a table object for each table of our given capacity
@@ -20,7 +23,9 @@ class restaurant(object):
               for i in range(num_tables):
                 new_table = table(capacity)
                 arr.append(new_table)
-          return arr
+              #keys are integers
+              table_dict[capacity] = arr
+          return table_dict
         
       def calc_total_capacity(self,table_array):
           total = 0
