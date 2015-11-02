@@ -17,7 +17,16 @@ def run_simulation():
     print union_grill.table_dict
     
     
-    
+############################################################
+# Plan is to randomly generate customers,                  #
+# then try several algorithms and minimizations            #
+#                                                          #
+# Can minimize avg wait time, max wait time                #
+# Can maximize utilization (from restaurant's POV)         #
+# Can use greedy, randomized, assignment algo, etc.        #
+#                                                          #
+# Analyze and pick the best one for various situations     #
+############################################################
     
     
 
