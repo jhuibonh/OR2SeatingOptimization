@@ -53,7 +53,7 @@ class Table(object):
     def turn_count(self):
         count = 0
         for (start,end) in self.available:
-        count += (end-start)/meal_duration
+            count += (end-start)/meal_duration
         return count
 
     def seat(self,start_time):
@@ -77,7 +77,7 @@ class Table(object):
         for index in range(1, len(self.available)):
             (start1,end1) = self.available[index-1]
             (start2,end2) = self.available[index]
-            if end1 = start2:
+            if end1 == start2:
                 self.available[index-1] = (start1,end2)
                 to_pop.append(index)
         for index in to_pop:
