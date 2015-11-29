@@ -37,7 +37,9 @@ def heuristic_1(restaurant, demandStream):
 			if table.capacity >= size:
 				seatable = table.seat(time)
 				if seatable:
-					booked += size
+                                        #missing append to fulfilled
+                                        fulfilled.append((size,time))
+                                        booked += size
 					break # go to next reservation
 	return booked
 
@@ -73,8 +75,7 @@ def heuristic_2(restaurant, demandStream):
 				if seatable:
                                         accept_probability = round(random.uniform(0.1, 1.0), 2)
                                         accept_probability_threshold = table.accept_probability(time,discount)
-					final_count = table.turn_count()
-					if (final_count < initial_count - 1) and (accept_probability > accept_probability_threshold):
+					if (accept_probability > accept_probability_threshold):
 						table.unseat(time)
 					else:
 						fulfilled.append((size,time))
@@ -113,8 +114,7 @@ def heuristic_3(restaurant, demandStream):
 				if seatable:
                                         accept_probability = round(random.uniform(0.1, 1.0), 2)
                                         accept_probability_threshold = table.accept_probability(time,discount)
-					final_count = table.turn_count()
-					if (final_count < initial_count - 1) and (accept_probability > accept_probability_threshold):
+					if (accept_probability > accept_probability_threshold):
 						table.unseat(time)
 					else:
 						fulfilled.append((size,time))
