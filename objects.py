@@ -23,10 +23,12 @@ class Restaurant(object):
             arr = []
             capacity = table_tuple[0]
             num_tables = table_tuple[1]
+            meal_duration = table_tuple[2]
+            max_duration = table_tuple[3]
             #create a table object for each table of our given capacity
             #and append it to our array
             for i in range(num_tables):
-              new_table = Table(capacity)
+              new_table = Table(capacity,meal_duration,max_duration)
               arr.append(new_table)
             #keys are integers
             table_dict[capacity] = arr
@@ -44,25 +46,48 @@ class Table(object):
     #A table is occupied once there are people at the
     #table. No more people can be seated at the same
     #table even if there are seats available
-    def __init__(self,capacity,meal_duration,total_time):
+    def __init__(self,capacity,meal_duration,max_duration):
         self.capacity = capacity
         self.meal_duration = meal_duration
-        self.total_time = total_time
+        #invariant for the array below is that the tuples
+        #are sorted in ascending order where the first tuple is
+        #always (0,x) where x is some end time
         self.available = [(0, max_duration)]
-
+        self.max_duration = max_duration
+    
+    
+    #count must be at least 1
     def turn_count(self):
         count = 0
         for (start,end) in self.available:
             count += (end-start)/meal_duration
         return count
+    
+    # calculate's probability of accepting alternate time slot
+    # based on how far the suggested start time is from
+    # the original start time
+    def accept_probability(self,start_time,discount):
+        optimal_suggestion = self.available[0][1]
+        #below is safe since we have already callsed seat on this start time
+        #can extend this part to search for all possible time slots
+        if discount == None:
+            return round(1 - ((start_time-optimal_suggestion)/self.max_duration),2)
+        else:
+            original_prob = round(1 - ((start_time-optimal_suggestion)/self.max_duration),2)
+            discount_incentive = round(((start_time-optimal_suggestion)/self.max_duration),2) * discount
+            return original_prob + discount_incentive
+    
+    def optimal_time(self):
+        return self.available[0][1]
 
     def seat(self,start_time):
         for index in range(len(self.available)):
             (start,end) = self.available[index]
             if start <= start_time and start_time + self.meal_duration < end:
                 self.available.pop(index)
-                self.available.insert(index, (start_time+self.meal_duration, end))
                 self.available.insert(index, (start, start_time))
+                #below should be index + 1 not index please confirm this
+                self.available.insert(index+1, (start_time+self.meal_duration, end))
                 return True
         return False
 
@@ -83,24 +108,5 @@ class Table(object):
         for index in to_pop:
             self.available.pop(index)
                 
-
-
-
-    # below this is deprecated since we're not doing walkins any more
-    
-    # #seat people at a table
-    # def seat_people(self,num_customers):
-    #     if self.available_seating > capacity:
-    #         print "cannot seat more people than there are seats"
-    #     else:
-    #         self.seated = num_customers
-    #         self.available_seating = capacity - num_customers
-    #         self.occupied = True
-
-    # def unseat_people(self):
-    #     if self.occupied:
-    #         self.occupied = False
-    #     else:
-    #         print "nobody at table to kick out"
             
             
