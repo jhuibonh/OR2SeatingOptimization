@@ -182,7 +182,7 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
        pending_requested_arrival.pop(0)
        pending_request_size.pop(0)
        if reject_utilization > accept_utilization:
-          naive_algorithm(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)
+          run_extendeds(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)
        else:
           accepted.append(size)
           accepted_arrival.append(time)
@@ -190,7 +190,7 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
              revenue = revenue + size * value_per_seat * discount
           else:
              revenue = revenue + size * value_per_seat
-          naive_algorithm(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)  
+          run_extendeds(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)  
           
 
          
