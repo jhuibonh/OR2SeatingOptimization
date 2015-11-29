@@ -54,15 +54,15 @@ def heuristic_2(restaurant, demandStream):
 				initial_count = table.turn_count()
 				seatable = table.seat(time)
 				if seatable:
-                                        accept_probability = round(random.uniform(0.1, 1.0), 2)
-                                        accept_probability_threshold = table.accept_probability(time,None)
+                    accept_probability = round(random.uniform(0.1, 1.0), 2)
+                    accept_probability_threshold = table.accept_probability(time,None)
 					final_count = table.turn_count()
 					if (final_count < initial_count - 1) and (accept_probability > accept_probability_threshold):
 						table.unseat(time)
-                                        elif (final_count < initial_count - 1) and (accept_probability <= accept_probability_threshold):
-                                                optimal_time = table.optimal_time
-                                                table.seat(optimal_time)
-                                                fulfilled.append((size,optimal_time))
+                    elif (final_count < initial_count - 1) and (accept_probability <= accept_probability_threshold):
+                        optimal_time = table.optimal_time
+                        table.seat(optimal_time)
+                        fulfilled.append((size,optimal_time))
 					else:
 						fulfilled.append((size,time))
 						booked += size
@@ -92,15 +92,15 @@ def heuristic_3(restaurant, demandStream):
 				initial_count = table.turn_count()
 				seatable = table.seat(time)
 				if seatable:
-                                        accept_probability = round(random.uniform(0.1, 1.0), 2)
-                                        accept_probability_threshold = table.accept_probability(time,discount)
+                    accept_probability = round(random.uniform(0.1, 1.0), 2)
+                    accept_probability_threshold = table.accept_probability(time,discount)
 					final_count = table.turn_count()
 					if (final_count < initial_count - 1) and (accept_probability > accept_probability_threshold):
 						table.unseat(time)
-                                        elif (final_count < initial_count - 1) and (accept_probability <= accept_probability_threshold):
-                                                optimal_time = table.optimal_time
-                                                table.seat(optimal_time)
-                                                fulfilled.append((size,optimal_time))
+                    elif (final_count < initial_count - 1) and (accept_probability <= accept_probability_threshold):
+                        optimal_time = table.optimal_time
+                        table.seat(optimal_time)
+                        fulfilled.append((size,optimal_time))
 					else:
 						fulfilled.append((size,time))
 						booked += size
@@ -161,36 +161,38 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
     test_restaurant = copy.deepcopy(restaurant)
     #base case if number of requests accepted is 0 we return the number of seats booked * value_per_seat along with the accepted requests and arrival times
     if num_requests_accepted == 0:
-       return (accepted,accepted_arrival,revenue)
+    	return (accepted,accepted_arrival,revenue)
     else:
-       time = pending_requested_arrival[0]
-       size= pending_request_size[0]
-       #try accepting the reservation and test it against case where we reject
-       for table in test_restaurant.table_dict:
-           if table.capacity == size:
-              seatable = table.seat(time)
-              if not seatable:
-                 accept_probability = round(random.uniform(0.1, 1.0), 2)
-                 accept_probability_threshold = table.accept_probability(time,discount)
-                 if accept_probability > accept_probability_threshold:
-                    table.unseat(time)
-                 elif heuristic_num == 3: discounted = True     
+        time = pending_requested_arrival[0]
+        size= pending_request_size[0]
+        #try accepting the reservation and test it against case where we reject
+        for table in test_restaurant.table_dict:
+            if table.capacity == size:
+                seatable = table.seat(time)
+                if not seatable:
+                	accept_probability = round(random.uniform(0.1, 1.0), 2)
+                 	accept_probability_threshold = table.accept_probability(time,discount)
+
+                 	## not sure which indent level this should be--JM?
+                	if accept_probability > accept_probability_threshold: 
+                    	table.unseat(time) 
+                elif heuristic_num == 3: discounted = True     
                  
-       accept_utilization = heuristic_func(test_restaurant,pending_requested_arrival)
-       #update parameters to be passed into recursive call
-       num_requests_accepted -= 1
-       pending_requested_arrival.pop(0)
-       pending_request_size.pop(0)
-       if reject_utilization > accept_utilization:
-          run_extendeds(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)
-       else:
-          accepted.append(size)
-          accepted_arrival.append(time)
-          if discounted:
-             revenue = revenue + size * value_per_seat * discount
-          else:
-             revenue = revenue + size * value_per_seat
-          run_extendeds(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)  
+        accept_utilization = heuristic_func(test_restaurant,pending_requested_arrival)
+        #update parameters to be passed into recursive call
+        num_requests_accepted -= 1
+        pending_requested_arrival.pop(0)
+        pending_request_size.pop(0)
+        if reject_utilization > accept_utilization:
+        	run_extendeds(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)
+       	else:
+        	accepted.append(size)
+          	accepted_arrival.append(time)
+          	if discounted:
+             	revenue = revenue + size * value_per_seat * discount
+          	else:
+            	revenue = revenue + size * value_per_seat
+          	run_extendeds(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num)  
           
 
          
