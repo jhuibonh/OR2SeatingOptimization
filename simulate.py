@@ -12,6 +12,19 @@ def run_simulation():
     table_array = [(6,1),(2,1),(4,2)]
     union_grill = Restaurant(table_array)
     
+    naive=[]
+    heuristic1=[]
+    heuristic2=[]
+    heuristic3=[]
+    for x in xrange(0,200):
+        naive.append(run_naive(union_grill,))
+        heuristic1.append(run_extends(union_grill,)
+        heuristic2.append(run_extends(union_grill,)
+        heuristic3.append(run_extends(union_grill,)
+    print 1.0*sum(naive)/len(naive)
+    print 1.0*sum(heuristic1)/len(heuristic1)
+    print 1.0*sum(heuristic2)/len(heuristic2)
+    print 1.0*sum(heuristic3)/len(heuristic3)
     #test
     print union_grill.total_capacity 
     print union_grill.table_dict
