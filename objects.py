@@ -18,20 +18,18 @@ class Restaurant(object):
       # rather than table_tuples
       # (something to think about)
     def init_tables(self,table_array):
-        table_dict = {}
+        table_dict = []
         for table_tuple in table_array:
             arr = []
             capacity = table_tuple[0]
             num_tables = table_tuple[1]
-            meal_duration = table_tuple[2]
-            max_duration = table_tuple[3]
+            meal_duration = 4
+            max_duration = 20
             #create a table object for each table of our given capacity
             #and append it to our array
             for i in range(num_tables):
               new_table = Table(capacity,meal_duration,max_duration)
-              arr.append(new_table)
-            #keys are integers
-            table_dict[capacity] = arr
+              table_dict.append(new_table)
         return table_dict
       
     def calc_total_capacity(self,table_array):
@@ -60,7 +58,7 @@ class Table(object):
     def turn_count(self):
         count = 0
         for (start,end) in self.available:
-            count += (end-start)/meal_duration
+            count += (end-start)/self.meal_duration
         return count
     
     # calculate's probability of accepting alternate time slot
@@ -68,7 +66,7 @@ class Table(object):
     # the original start time
     def accept_probability(self,start_time,discount):
         optimal_suggestion = self.available[0][1]
-        #below is safe since we have already callsed seat on this start time
+        #below is safe since we have already called seat on this start time
         #can extend this part to search for all possible time slots
         if discount == None:
             return round(1 - ((start_time-optimal_suggestion)/self.max_duration),2)

@@ -1,6 +1,7 @@
 import math
 import random
 from objects import *
+from heuristic import *
 
 #generate customers according to a poisson process
 def nextCustomers(rate):
@@ -9,25 +10,39 @@ def nextCustomers(rate):
 
 def run_simulation():
     #testing to see if oop implementation is working properly
-    table_array = [(6,1),(2,1),(4,2)]
+    table_array = [(6,3),(2,3),(4,3)]
     union_grill = Restaurant(table_array)
     
     naive=[]
     heuristic1=[]
     heuristic2=[]
     heuristic3=[]
-    for x in xrange(0,200):
-        naive.append(run_naive(union_grill,))
-        heuristic1.append(run_extends(union_grill,)
-        heuristic2.append(run_extends(union_grill,)
-        heuristic3.append(run_extends(union_grill,)
-    print 1.0*sum(naive)/len(naive)
-    print 1.0*sum(heuristic1)/len(heuristic1)
-    print 1.0*sum(heuristic2)/len(heuristic2)
-    print 1.0*sum(heuristic3)/len(heuristic3)
+    num_requests = 50
+    for x in xrange(0,10):
+        pending = randomStream(num_requests)
+        pending_size = [size for (size,time) in pending]
+        pending_time = [time for (size,time) in pending]
+        naive.append(run_naive(union_grill,num_requests,
+                               [],[],pending_size,pending_time,0))
+        #heuristic1.append(run_extendeds(union_grill,num_requests,
+        #                                [],[],pending_size,pending_time,0))
+        pending_size = [size for (size,time) in pending]
+        pending_time = [time for (size,time) in pending]
+        heuristic2.append(run_extendeds(restaurant=union_grill,num_requests_accepted=num_requests,
+                                        accepted=[],accepted_arrival=[],
+                                        pending_request_size=pending_size,
+                                        pending_requested_arrival=pending_time,revenue=0,heuristic_num=2))
+        pending_size = [size for (size,time) in pending]
+        pending_time = [time for (size,time) in pending]
+        heuristic3.append(run_extendeds(union_grill,num_requests,
+                                        [],[],pending_size,pending_time,0,3,discount=.95))
+        print x
+    print "naive:", 1.0*sum([c for (a,b,c) in naive])/len(naive)
+    #print 1.0*sum(heuristic1)/len(heuristic1)
+    print "extended:", 1.0*sum([c for (a,b,c) in heuristic2])/len(heuristic2)
+    print "discounted:", 1.0*sum([c for (a,b,c) in heuristic3])/len(heuristic3)
     #test
-    print union_grill.total_capacity 
-    print union_grill.table_dict
+
     
     
 ############################################################
