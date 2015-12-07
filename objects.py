@@ -69,10 +69,10 @@ class Table(object):
         #below is safe since we have already called seat on this start time
         #can extend this part to search for all possible time slots
         if discount == None:
-            return round(1 - ((start_time-optimal_suggestion)/self.max_duration),2)
+            return  float((start_time-optimal_suggestion))/float(self.max_duration)
         else:
             original_prob = round(1 - ((start_time-optimal_suggestion)/self.max_duration),2)
-            discount_incentive = round(((start_time-optimal_suggestion)/self.max_duration),2) * discount
+            discount_incentive = round(((start_time-optimal_suggestion)/self.max_duration),2) + discount
             return original_prob + discount_incentive
     
     def optimal_time(self):

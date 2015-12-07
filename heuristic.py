@@ -193,7 +193,8 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
             if table.capacity == size:
                 seatable = table.seat(time)
                 if not seatable:
-                    accept_probability = round(random.uniform(0.1, 1.0), 2)
+                    #capping accept probability at 70 percent
+                    accept_probability = round(random.uniform(0.1, 0.7), 2)
                     accept_probability_threshold = table.accept_probability(time,discount)
                     if accept_probability > accept_probability_threshold:
                         table.unseat(time)
@@ -212,7 +213,7 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
             accepted.append(size)
             accepted_arrival.append(time)
             if discounted:
-                revenue = revenue + size * value_per_seat * discount
+                revenue = revenue + size * value_per_seat * (1-discount)
             else:
                 revenue = revenue + size * value_per_seat
             return run_extendeds(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num,discount)  

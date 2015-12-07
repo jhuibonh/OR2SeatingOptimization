@@ -17,7 +17,7 @@ def run_simulation():
     heuristic1=[]
     heuristic2=[]
     heuristic3=[]
-    num_requests = 50
+    num_requests = 20
     for x in xrange(0,10):
         pending = randomStream(num_requests)
         pending_size = [size for (size,time) in pending]
@@ -35,7 +35,7 @@ def run_simulation():
         pending_size = [size for (size,time) in pending]
         pending_time = [time for (size,time) in pending]
         heuristic3.append(run_extendeds(union_grill,num_requests,
-                                        [],[],pending_size,pending_time,0,3,discount=.95))
+                                        [],[],pending_size,pending_time,0,3,discount=.15))
         print x
     print "naive:", 1.0*sum([c for (a,b,c) in naive])/len(naive)
     #print 1.0*sum(heuristic1)/len(heuristic1)
