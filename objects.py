@@ -1,4 +1,10 @@
 
+#################################################
+# Objects.py                                    #
+# Contains class definitions for Restaurants    #
+# and Tables, plus relevant methods for each    #
+#################################################
+
 class Restaurant(object):
     def __init__(self,table_array):
         self.table_dict = self.init_tables(table_array)

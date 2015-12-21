@@ -1,3 +1,12 @@
+
+###################################################
+# Heuristic.py                                    #
+# Contains functions to compute the two-pass      #
+# heuristic, as well as run the naive algorithm   #
+# and both versions of the extended algorithms    #
+###################################################
+
+
 import math
 import random
 from objects import *
@@ -130,7 +139,8 @@ def heuristic_3(restaurant, demandStream, discount):
     return booked * value_per_seat
 
 #requires: num_requests_accpeted <= total_period same for all other arguments except booked. heruisitc_num <= 3
-def run_naive (restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,booked):
+def run_naive (restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,
+               pending_requested_arrival,booked):
     #expected utilization on reject
     reject_utilization = 0
     sim_streams = 50
@@ -139,7 +149,8 @@ def run_naive (restaurant,num_requests_accepted,accepted,accepted_arrival,pendin
     reject_utilization /= float(sim_streams)
     #this is necessary to test whether a reservation makes sense without committing to the reservation
     test_restaurant = copy.deepcopy(restaurant)
-    #base case if number of requests accepted is 0 we return the number of seats booked * value_per_seat along with the accepted requests and arrival times
+    #base case if number of requests accepted is 0 we return the number of seats booked * value_per_seat
+    #along with the accepted requests and arrival times
     if num_requests_accepted == 0:
         return (accepted,accepted_arrival,booked * value_per_seat)
     else:
@@ -159,15 +170,19 @@ def run_naive (restaurant,num_requests_accepted,accepted,accepted_arrival,pendin
         pending_requested_arrival.pop(0)
         pending_request_size.pop(0)
         if reject_utilization > accept_utilization:
-            return run_naive(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,booked)
+            return run_naive(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,
+                             pending_requested_arrival,booked)
         else:
             accepted.append(size)
             accepted_arrival.append(time)
-            return run_naive(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,booked+size)
+            return run_naive(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,
+                             pending_requested_arrival,booked+size)
 
 
-#requires: num_requests_accpeted <= total_period same for all other arguments except booked. heruisitc_num <= 3, discount is None if heuristic_num == 2 and a value between 0 and 1 if heuristic_num == 3
-def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num,discount=None):
+#requires: num_requests_accpeted <= total_period same for all other arguments except booked. heruisitc_num <= 3
+#discount is None if heuristic_num == 2 and a value between 0 and 1 if heuristic_num == 3
+def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,
+                   pending_requested_arrival,revenue,heuristic_num,discount=None):
     switch = {
         2: heuristic_2,
         3: heuristic_3
@@ -182,7 +197,8 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
     reject_utilization /= float(sim_streams)
     #this is necessary to test whether a reservation makes sense without committing to the reservation
     test_restaurant = copy.deepcopy(restaurant)
-    #base case if number of requests accepted is 0 we return the number of seats booked * value_per_seat along with the accepted requests and arrival times
+    #base case if number of requests accepted is 0 we return the number of seats booked * value_per_seat
+    #along with the accepted requests and arrival times
     if len(pending_requested_arrival) == 0:
         return (accepted,accepted_arrival,revenue)
     else:
@@ -208,7 +224,8 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
         pending_requested_arrival.pop(0)
         pending_request_size.pop(0)
         if reject_utilization > accept_utilization:
-            return run_extendeds(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num,discount)
+            return run_extendeds(restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,
+                                 pending_requested_arrival,revenue,heuristic_num,discount)
         else:
             accepted.append(size)
             accepted_arrival.append(time)
@@ -216,7 +233,8 @@ def run_extendeds (restaurant,num_requests_accepted,accepted,accepted_arrival,pe
                 revenue = revenue + size * value_per_seat * (1-discount)
             else:
                 revenue = revenue + size * value_per_seat
-            return run_extendeds(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,pending_requested_arrival,revenue,heuristic_num,discount)  
+            return run_extendeds(test_restaurant,num_requests_accepted,accepted,accepted_arrival,pending_request_size,
+                                 pending_requested_arrival,revenue,heuristic_num,discount)
           
 
          

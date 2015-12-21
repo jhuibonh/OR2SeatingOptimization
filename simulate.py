@@ -1,3 +1,11 @@
+
+############################################################
+# simulate.py                                              #
+# Contains a wrapper to test the algorithm on a            #
+# small restaurant, designated Union Grill internally      #
+# (does not reflect actual Union Grill seating alignment)  #
+############################################################
+
 import math
 import random
 from objects import *
@@ -38,25 +46,9 @@ def run_simulation():
                                         [],[],pending_size,pending_time,0,3,discount=.15))
         print x
     print "naive:", 1.0*sum([c for (a,b,c) in naive])/len(naive)
-    #print 1.0*sum(heuristic1)/len(heuristic1)
     print "extended:", 1.0*sum([c for (a,b,c) in heuristic2])/len(heuristic2)
     print "discounted:", 1.0*sum([c for (a,b,c) in heuristic3])/len(heuristic3)
     #test
-
-    
-    
-############################################################
-# Plan is to randomly generate customers,                  #
-# then try several algorithms and minimizations            #
-#                                                          #
-# Can minimize avg wait time, max wait time                #
-# Can maximize utilization (from restaurant's POV)         #
-# Can use greedy, randomized, assignment algo, etc.        #
-#                                                          #
-# Analyze and pick the best one for various situations     #
-############################################################
-    
-    
 
 if __name__ == '__main__':
     run_simulation()
