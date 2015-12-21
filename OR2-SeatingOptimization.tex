@@ -143,6 +143,16 @@ $$\times$ $p(d)$ +  p($q_{k})$ + (1-$p(d)$-  p($q_{k})$) $\times$$ $E [$J_{k+1}$
 
 \section{Results}
 
+Due to the large amount of computation involved when the number of reservations requests are $>$ 50, we ran our code with a random stream of 10 requests. Our restaurant had the following configuration: 3 tables of capacity 6,  3 tables of capacity 4, and  3 tables of capacity 2. We assume that each customer provides a value of $\$$ 10 per person and the discount value used to incentivize customers to accept our alternate reservation is 15$\%$. After running the simulation 20 times with the above parameters and averaging the results, we get the following values
+
+\begin{itemize}
+\item Naive model: 325.75
+\item Flexibility model: 348.95
+\item Extended model: 354.4625
+\end{itemize}
+
+As we can see above, the average increase over the Naive model for the Flexibility model is 7.1$\%$  and the average increase over the Flexibility model for the Extended Model is 1.6$\%$. Over an average of 20 simulations, it is quite clear that using a suitable discount value (15$\%$ in this case) our extended model is superior to the other two models as an average 1.6$\%$ increase in revenue for a restaurant generating $\$$ 1 million a year represents an extra $\$$16000 in revenue.
+
 \section{Appendix: Code}
 
 Below follows the Python code we used to simulate demand and test our algorithm. Apologies for the rather inaccessible formatting.
