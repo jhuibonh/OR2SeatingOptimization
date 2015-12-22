@@ -5,6 +5,7 @@
 \usepackage{fancyhdr}
 \usepackage{tikz}
 \usepackage{fancyvrb}
+\usepackage{hyperref}
 
 \oddsidemargin0cm
 \topmargin-2cm     
@@ -53,7 +54,6 @@ This setup also brings another complication. When deciding how to seat the walk 
 In this paper we attempt to determine when accepting a reservation at the current time is the optimal decision by using dynamic programming. There are some methods that have already been explored, including a method by Bossert that is based upon predicted future demand. We will begin with this method and use it as a basis to find an optimal seating algorithm for taking reservations. Then we will explore a extension by Fieldman which attempts to expand the model by creating a flexibility factor that allows customers to be given another time slot different from the one that was initially requested; this will be modeled by guests randomly accepting or rejecting another time slot. We will then take this one step further and attempt to offer customers a discount on the meal if they accept another time slot in hopes that the flexibility of the model will increase. The methods in the paper will be tested using random demand streams and then compared to find the most profitable method.\\
  \\
 Throughout the paper, we make several simplifying assumptions to make the project manageable. First, we assume that future demand is uncertain and tables cannot be combined (that is, restaurants cannot make two tables for two into one table for four, or split parties among tables). We also assume all party sizes take the same amount of time to eat, and the time to clean and prepare tables are negligible. The restaurants that are taken into consideration have staff that make the decisions on where and when to seat people. Whenever we decide whether or not to accept a reservation or request, we compare the profits that we could obtain if we took the reservation or seated the current group versus how much the restaurant could make if they did not seat this current group. There are limitations on how many times a simulation can be tested before averaged, and the number of combinations of tables that can be checked before deciding on a optimal seating or else the run time will become unreasonable.
-
 
 \subsection{Bossert's Method and Two-Pass Heuristic }
 
@@ -143,15 +143,25 @@ $$\times$ $p(d)$ +  p($q_{k})$ + (1-$p(d)$-  p($q_{k})$) $\times$$ $E [$J_{k+1}$
 
 \section{Results}
 
-Due to the large amount of computation involved when the number of reservations requests are $>$ 50, we ran our code with a random stream of 10 requests. Our restaurant had the following configuration: 3 tables of capacity 6,  3 tables of capacity 4, and  3 tables of capacity 2. We assume that each customer provides a value of $\$$ 10 per person and the discount value used to incentivize customers to accept our alternate reservation is 15$\%$. After running the simulation 20 times with the above parameters and averaging the results, we get the following values
+Due to the large amount of computation involved when the number of reservations requests are $>$ 50, we ran our code with a random stream of 10 requests. Our restaurant had the following configuration: 3 tables of capacity 6,  3 tables of capacity 4, and  3 tables of capacity 2. We assume that each customer provides a value of $\$$ 50 per person and the discount value used to incentivize customers to accept our alternate reservation is 15$\%$. After running the simulation 20 times with the above parameters and averaging the results, we get the following values:
 
 \begin{itemize}
-\item Naive model: 325.75
-\item Flexibility model: 348.95
-\item Extended model: 354.4625
+\item Naive model: \$1560.25
+\item Flexibility model: \$1704.50
+\item Extended model: \$1734.5
 \end{itemize}
 
-As we can see above, the average increase over the Naive model for the Flexibility model is 7.1$\%$  and the average increase over the Flexibility model for the Extended Model is 1.6$\%$. Over an average of 20 simulations, it is quite clear that using a suitable discount value (15$\%$ in this case) our extended model is superior to the other two models as an average 1.6$\%$ increase in revenue for a restaurant generating $\$$ 1 million a year represents an extra $\$$16000 in revenue.
+As we can see above, the average increase over the Naive model for the Flexibility model is 9.2$\%$  and the average increase over the Naive model for the Extended Model is 11.2$\%$. Over an average of 20 simulations, it is quite clear that using a suitable discount value (15$\%$ in this case) our extended model is superior to the other two models as an average 11.2$\%$ increase in revenue for a restaurant generating $\$$875,000 a year (a reasonable figure for a fancy restaurant getting 50 customers a night) represents about an extra $\$$100,000 in revenue.
+
+\section{Conclusions}
+
+We believe that our simulation shows restaurants would increase their revenue if they were to apply our method rather than a naive method. While our simulation was only for a specific instance, the concept should generalize well to restaurants with different space and time constraints. In addition, we must address whether or not the system is practical. As it is, running the heuristic and coming up with a decision (reject/accept/offer a different time) takes under a second per request, which is definitely quick enough that a host or hostess taking calls from prospective customers could run the algorithm for every call before responding to the customer---it would take no longer than inputting the request into a schedule to ensure the request is serviceable in the first place. If we wanted to add complexity to the algorithm to make better decisions, we would need to be careful to not increase the runtime by a prohibitive factor.\\
+\\
+One possible extension is to develop a quick way to try every possible time-slot and table assignment for a given party (or, more plausibly, a heuristically-defined subset of them), then sorting by descending projected revenue and offering the customer each one until either they accept the offer or the expected revenue for an assignment drops below the accepted revenue for rejecting the customer. Similarly, one could offer more and more of a discount until the customer accepts. These methods almost create a form of price discrimination, in which the customers' flexibility and willingness to pay directly determines the time they receive and price they get, rather than using a one-size-fits-all algorithm. Our simulation assumed homogeneous preferences across customers, which is good for an initial exploration but clearly not realistic. Real-world experimentation by actually implementing the algorithm in a restaurant and observing the effect on revenue would be an excellent way to test our research as well.
+
+\section{References}
+
+Feldman, Jake. 2010. Optimizing Restaurant Reservation Scheduling. Senior Thesis, Harvey Mudd College. \href{https://www.math.hmc.edu/seniorthesis/archives/2010/jfeldman/jfeldman-2010-thesis.pdf}{https://www.math.hmc.edu/seniorthesis/archives/2010/jfeldman/jfeldman-2010-thesis.pdf}. Web.
 
 \section{Appendix: Code}
 
